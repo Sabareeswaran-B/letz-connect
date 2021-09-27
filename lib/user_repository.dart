@@ -13,6 +13,9 @@ class UserRepository {
       var cache = await APICacheManager().getCacheData(email);
       var user = jsonDecode(cache.syncData);
       if (user['password'] == password) {
+        StorageManager.saveData("username", user['username']);
+        StorageManager.saveData("email", email);
+        StorageManager.saveData("userId", user['userId']);
         return {"message": "Login Successfull", "success": true, "data": user};
       } else {
         return {"message": "Invalid password", "success": false, "data": null};
@@ -46,7 +49,6 @@ class UserRepository {
       StorageManager.saveData("username", username);
       StorageManager.saveData("email", email);
       StorageManager.saveData("userId", user['userId']);
-      StorageManager.saveData("password", password);
       return {"message": "Signup Successfull", "success": true, "data": user};
     } else {
       return {"message": "Signup Failed", "success": false, "data": null};
