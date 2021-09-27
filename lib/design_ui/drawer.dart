@@ -1,3 +1,5 @@
+// ignore: unused_import
+import 'package:api_cache_manager/api_cache_manager.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 // ignore: unused_import
 import 'package:cia_client/constant.dart';
@@ -159,6 +161,7 @@ class _DrawerScreenState extends State<DrawerScreen> {
                   ListTile(
                     onTap: () async {
                       await StorageManager.clear();
+                      // await APICacheManager().emptyCache();
                       Navigator.of(context).push(
                         MaterialPageRoute(
                           builder: (builder) => IntroScreen(),

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:cia_client/constant.dart';
 import 'package:cia_client/design_ui/connect_main.dart';
 import 'package:cia_client/design_ui/signup.dart';
@@ -24,7 +26,6 @@ class _SigninScreenState extends State<SigninScreen> {
   bool _emailEmpty = false;
   bool _passwordEmpty = false;
 
-
   void _validateAndSignIn() async {
     if (!_email.text.contains("@")) {
       _emailError = true;
@@ -44,10 +45,15 @@ class _SigninScreenState extends State<SigninScreen> {
         }
         if (user['success'] == true) {
           print(user);
-          Navigator.of(context)
-              .push(MaterialPageRoute(builder: (builder) => ConnectMain()));
+          Timer(Duration(milliseconds: 500), () {
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (builder) => ConnectMain(),
+              ),
+            );
+          });
         }
-      } 
+      }
     }
   }
 
@@ -198,44 +204,44 @@ class _SigninScreenState extends State<SigninScreen> {
                   height: 75,
                 ),
                 Container(
-                        width: MediaQuery.of(context).size.width / 1.4,
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(7),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.grey.shade300,
-                              blurRadius: 2,
-                              spreadRadius: 2,
-                              offset: Offset(5.0, 5.0),
-                            ),
-                          ],
-                        ),
-                        child: TextButton(
-                          onPressed: () {
-                            if (_email.text.isEmpty) {
-                              setState(() {
-                                _emailEmpty = true;
-                              });
-                            }
-                            if (_password.text.isEmpty) {
-                              setState(() {
-                                _passwordEmpty = true;
-                              });
-                            }
-                            if (!_emailEmpty && !_passwordEmpty) {
-                              _validateAndSignIn();
-                            }
-                          },
-                          child: Text(
-                            "Sign in",
-                            style: TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ),
+                  width: MediaQuery.of(context).size.width / 1.4,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(7),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey.shade300,
+                        blurRadius: 2,
+                        spreadRadius: 2,
+                        offset: Offset(5.0, 5.0),
                       ),
+                    ],
+                  ),
+                  child: TextButton(
+                    onPressed: () {
+                      if (_email.text.isEmpty) {
+                        setState(() {
+                          _emailEmpty = true;
+                        });
+                      }
+                      if (_password.text.isEmpty) {
+                        setState(() {
+                          _passwordEmpty = true;
+                        });
+                      }
+                      if (!_emailEmpty && !_passwordEmpty) {
+                        _validateAndSignIn();
+                      }
+                    },
+                    child: Text(
+                      "Sign in",
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                ),
                 SizedBox(height: 10),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,

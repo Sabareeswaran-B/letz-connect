@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:cia_client/design_ui/add_education.dart';
 import 'package:cia_client/design_ui/drawer.dart';
 import 'package:cia_client/storage_manager.dart';
 import 'package:flutter/cupertino.dart';
@@ -16,7 +17,7 @@ class ProfileScreen extends StatefulWidget {
 class _ProfileScreenState extends State<ProfileScreen> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
-   @override
+  @override
   void initState() {
     StorageManager.readData("email").then((value) {
       setState(() {
@@ -125,7 +126,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     ),
                   ),
                   TextButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (builder) => AddEducation()));
+                    },
                     child: Container(
                       padding:
                           EdgeInsets.symmetric(horizontal: 15, vertical: 10),

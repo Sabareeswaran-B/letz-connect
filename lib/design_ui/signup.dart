@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:cia_client/constant.dart';
 import 'package:cia_client/design_ui/connect_main.dart';
 import 'package:cia_client/design_ui/signin.dart';
@@ -38,8 +40,13 @@ class _SignupScreenState extends State<SignupScreen> {
       var user = await UserRepository()
           .signup(_userName.text, _email.text, _password.text);
       if (user['success'] == true) {
-        Navigator.of(context)
-            .push(MaterialPageRoute(builder: (builder) => ConnectMain()));
+        Timer(Duration(milliseconds: 500), () {
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (builder) => ConnectMain(),
+            ),
+          );
+        });
       }
       if (user['message'] == "Email already exist") {
         setState(() {

@@ -30,7 +30,9 @@ class UserRepository {
       "username": username,
       "email": email,
       "userId": DateTime.now().toString(),
-      "password": password
+      "password": password,
+      "education": [],
+      "experience": [],
     };
     String user = jsonEncode(obj);
     bool isNotExist = await APICacheManager().isAPICacheKeyExist(email);
@@ -52,6 +54,30 @@ class UserRepository {
       return {"message": "Signup Successfull", "success": true, "data": user};
     } else {
       return {"message": "Signup Failed", "success": false, "data": null};
+    }
+  }
+
+  Future addEducation(Map object) async {
+    String email = await StorageManager.readData("email");
+    var cache = await APICacheManager().getCacheData(email);
+    Map user = jsonDecode(cache.syncData);
+
+    List edu = user['education'];
+    edu.add(object);
+    user.update("education", (value) => edu);
+
+    String source = jsonEncode(user);
+
+    bool deleted = await APICacheManager().deleteCache(email);
+
+    if (deleted) {
+      APICacheDBModel cacheDBModel =
+          new APICacheDBModel(key: email, syncData: source);
+
+      bool isSaved = await APICacheManager().addCacheData(cacheDBModel);
+      if (isSaved) {
+        return user;
+      }
     }
   }
 }
