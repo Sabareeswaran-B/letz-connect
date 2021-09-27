@@ -37,7 +37,7 @@ dev_dependencies:
 flutter_icons:
   android: true
   ios: true
-  image_path: "assets/icons/link.png"
+  image_path: "assets/icons/link_new.png"
 
 flutter:
   uses-material-design: true

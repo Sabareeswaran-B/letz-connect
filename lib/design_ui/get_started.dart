@@ -39,7 +39,7 @@ class _IntroScreenState extends State<IntroScreen> {
                   borderRadius: BorderRadius.circular(50),
                 ),
                 child: Image.asset(
-                  "assets/icons/link.png",
+                  "assets/icons/link_new.png",
                   fit: BoxFit.cover,
                 ),
               ),
