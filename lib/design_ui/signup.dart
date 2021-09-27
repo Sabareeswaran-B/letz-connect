@@ -30,7 +30,9 @@ class _SignupScreenState extends State<SignupScreen> {
 
   void _validateAndSignUp() async {
     if (!_email.text.contains("@")) {
-      _emailError = true;
+      setState(() {
+        _emailError = true;
+      });
     }
     if (!_emailError && !_passwordError && !_cPasswordError) {
       var user = await UserRepository()
@@ -38,6 +40,17 @@ class _SignupScreenState extends State<SignupScreen> {
       if (user['success'] == true) {
         Navigator.of(context)
             .push(MaterialPageRoute(builder: (builder) => ConnectMain()));
+      }
+      if (user['message'] == "Email already exist") {
+        setState(() {
+          _emailError = true;
+        });
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text("Email already exist"),
+            duration: Duration(seconds: 1),
+          ),
+        );
       }
     }
   }
