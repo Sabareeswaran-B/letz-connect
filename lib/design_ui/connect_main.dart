@@ -24,6 +24,10 @@ class _ConnectMainState extends State<ConnectMain> {
       "message": {
         "title": "Internship",
         "description": "Started working at Smartchainers pvt. from July, 2021",
+      },
+      "attachments": {
+        "type": "",
+        "url": "",
       }
     },
     {
@@ -36,6 +40,10 @@ class _ConnectMainState extends State<ConnectMain> {
         "title": "selected as an intern",
         "description":
             "I'm really excited to work for Smartchainers pvt, starting from next week.",
+      },
+      "attachments": {
+        "type": "",
+        "url": "",
       }
     },
     {
@@ -48,6 +56,42 @@ class _ConnectMainState extends State<ConnectMain> {
         "title": "MCA",
         "description":
             "Joined MCA in RVS college one of the best college in Coimbatore also where i did my UG.",
+      },
+      "attachments": {
+        "type": "",
+        "url": "",
+      }
+    },
+    {
+      "postId": "1004",
+      "imageUrl":
+          "https://cdn.landesa.org/wp-content/uploads/default-user-image.png",
+      "username": "Stalin",
+      "created_At": "August 14, 2021",
+      "message": {
+        "title": "Joining PG",
+        "description":
+            "At last got a seat in a prestigious college in Coiambatore. Exited to be a part of Rvs collage.",
+      },
+      "attachments": {
+        "type": "",
+        "url": "",
+      }
+    },
+    {
+      "postId": "1003",
+      "imageUrl":
+          "https://cdn.landesa.org/wp-content/uploads/default-user-image.png",
+      "username": "Sabareeswaran B",
+      "created_At": "October 17, 2020",
+      "message": {
+        "title": "Aws in Coursera",
+        "description":
+            "Just finished my course Aws: Building serverless applications and got my certificate.",
+      },
+      "attachments": {
+        "type": "image",
+        "url": "assets/images/certificate.jpeg",
       }
     },
   ];
@@ -166,6 +210,17 @@ class _ConnectMainState extends State<ConnectMain> {
               ),
             ),
           ),
+          SizedBox(height: 15),
+          post['attachments']['url'] == ""
+              ? SizedBox()
+              : Container(
+                  alignment: Alignment.center,
+                  constraints: BoxConstraints(minHeight: 100),
+                  decoration: BoxDecoration(color: Colors.grey.shade400),
+                  child: Image.asset(
+                    post['attachments']['url'],
+                  ),
+                ),
           Divider(
             height: 30,
             thickness: 1,
@@ -185,13 +240,15 @@ class _ConnectMainState extends State<ConnectMain> {
                       }
                     });
                   },
-                  icon: Icon(liked.contains(post['postId'])  ? Icons.thumb_up_alt : Icons.thumb_up_alt_outlined)),
+                  icon: Icon(liked.contains(post['postId'])
+                      ? Icons.thumb_up_alt
+                      : Icons.thumb_up_alt_outlined)),
               SizedBox(width: 10),
               IconButton(onPressed: () {}, icon: Icon(Icons.comment_outlined)),
               Spacer(),
               IconButton(onPressed: () {}, icon: Icon(Icons.share)),
             ],
-          )
+          ),
         ],
       ),
     );
@@ -201,24 +258,24 @@ class _ConnectMainState extends State<ConnectMain> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-          drawer: DrawerScreen(),
-          key: _scaffoldKey,
-          backgroundColor: backgroundColor,
-          appBar: AppBar(
-            backgroundColor: primaryColor,
-            leading: IconButton(
-              onPressed: () {
-                _scaffoldKey.currentState!.openDrawer();
-              },
-              icon: Icon(Icons.menu, color: Colors.white, size: 30),
-            ),
-            centerTitle: true,
-            title: Text("Letz Connect"),
+        drawer: DrawerScreen(),
+        key: _scaffoldKey,
+        backgroundColor: backgroundColor,
+        appBar: AppBar(
+          backgroundColor: primaryColor,
+          leading: IconButton(
+            onPressed: () {
+              _scaffoldKey.currentState!.openDrawer();
+            },
+            icon: Icon(Icons.menu, color: Colors.white, size: 30),
           ),
-          body: SingleChildScrollView(
-            child:
-                Column(children: data.map((post) => postWidget(post)).toList()),
-          )),
+          centerTitle: true,
+          title: Text("Letz Connect"),
+        ),
+        body: ListView(
+            padding: EdgeInsets.only(bottom: 15),
+            children: data.map((post) => postWidget(post)).toList()),
+      ),
     );
   }
 }
