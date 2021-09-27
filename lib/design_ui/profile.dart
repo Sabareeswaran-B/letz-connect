@@ -17,6 +17,7 @@ class ProfileScreen extends StatefulWidget {
 
 class _ProfileScreenState extends State<ProfileScreen> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  final ScrollController _educationController = ScrollController();
 
   @override
   void initState() {
@@ -167,74 +168,79 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   color: Colors.grey.shade300,
                   borderRadius: BorderRadius.circular(25),
                 ),
-                child: ListView.builder(
-                    itemCount: education.length,
-                    itemBuilder: (ctx, index) {
-                      return Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            "Education: ${index + 1}",
-                            style: TextStyle(
-                              color: primaryColor,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 18,
+                child: CupertinoScrollbar(
+                  controller: _educationController,
+                  isAlwaysShown: true,
+                  child: ListView.builder(
+                      controller: _educationController,
+                      itemCount: education.length,
+                      itemBuilder: (ctx, index) {
+                        return Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "Education: ${index + 1}",
+                              style: TextStyle(
+                                color: primaryColor,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 18,
+                              ),
                             ),
-                          ),
-                          SizedBox(height: 15),
-                          Text(
-                            education[index]['degree'],
-                            style: TextStyle(
-                              color: Colors.black54,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 18,
+                            SizedBox(height: 15),
+                            Text(
+                              education[index]['degree'],
+                              style: TextStyle(
+                                color: Colors.black54,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 18,
+                              ),
                             ),
-                          ),
-                          SizedBox(height: 10),
-                          Text(
-                            education[index]['field'],
-                            style: TextStyle(
-                              color: Colors.black54,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 18,
+                            SizedBox(height: 10),
+                            Text(
+                              education[index]['field'],
+                              style: TextStyle(
+                                color: Colors.black54,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 18,
+                              ),
                             ),
-                          ),
-                          SizedBox(height: 10),
-                          Text(
-                            "University: " + education[index]['university'],
-                            style: TextStyle(
-                              color: Colors.black54,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 18,
+                            SizedBox(height: 10),
+                            Text(
+                              "University: " + education[index]['university'],
+                              style: TextStyle(
+                                color: Colors.black54,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 18,
+                              ),
                             ),
-                          ),
-                          SizedBox(height: 10),
-                          Text(
-                            "Grade: " + education[index]['grade'],
-                            style: TextStyle(
-                              color: Colors.black54,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 18,
+                            SizedBox(height: 10),
+                            Text(
+                              "Grade: " + education[index]['grade'],
+                              style: TextStyle(
+                                color: Colors.black54,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 18,
+                              ),
                             ),
-                          ),
-                          SizedBox(height: 10),
-                          Text(
-                            ("Batch: ${education[index]['startYear']} - ${education[index]['endYear']}"),
-                            style: TextStyle(
-                              color: Colors.black54,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 18,
+                            SizedBox(height: 10),
+                            Text(
+                              ("Batch: ${education[index]['startYear']} - ${education[index]['endYear']}"),
+                              style: TextStyle(
+                                color: Colors.black54,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 18,
+                              ),
                             ),
-                          ),
-                          Divider(
-                            height: 30,
-                            thickness: 0.7,
-                            color: Colors.black87,
-                          ),
-                        ],
-                      );
-                    }),
+                            Divider(
+                              height: 30,
+                              thickness: 0.7,
+                              color: Colors.black87,
+                            ),
+                          ],
+                        );
+                      }),
+                ),
               ),
               SizedBox(height: 30),
               Row(
