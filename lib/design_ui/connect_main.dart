@@ -16,6 +16,7 @@ class _ConnectMainState extends State<ConnectMain> {
 
   List<Map> data = [
     {
+      "postId": "1001",
       "imageUrl":
           "https://cdn.landesa.org/wp-content/uploads/default-user-image.png",
       "username": "Sabareeswaran B",
@@ -26,6 +27,7 @@ class _ConnectMainState extends State<ConnectMain> {
       }
     },
     {
+      "postId": "1002",
       "imageUrl":
           "https://cdn.landesa.org/wp-content/uploads/default-user-image.png",
       "username": "Gopi",
@@ -37,6 +39,7 @@ class _ConnectMainState extends State<ConnectMain> {
       }
     },
     {
+      "postId": "1003",
       "imageUrl":
           "https://cdn.landesa.org/wp-content/uploads/default-user-image.png",
       "username": "Sabareeswaran B",
@@ -49,10 +52,12 @@ class _ConnectMainState extends State<ConnectMain> {
     },
   ];
 
+  List liked = [];
+
   Widget postWidget(post) {
     return Container(
       margin: EdgeInsets.fromLTRB(15, 15, 15, 0),
-      padding: EdgeInsets.symmetric(horizontal: 15, vertical: 20),
+      padding: EdgeInsets.symmetric(horizontal: 15, vertical: 15),
       constraints: BoxConstraints(
         minHeight: 180,
       ),
@@ -118,6 +123,19 @@ class _ConnectMainState extends State<ConnectMain> {
                   ),
                 ],
               ),
+              Spacer(),
+              DropdownButton<String>(
+                icon: Icon(Icons.more_vert),
+                underline: SizedBox(),
+                items:
+                    <String>['Connect', 'Block', 'Report'].map((String value) {
+                  return DropdownMenuItem<String>(
+                    value: value,
+                    child: Text(value),
+                  );
+                }).toList(),
+                onChanged: (_) {},
+              ),
             ],
           ),
           SizedBox(height: 20),
@@ -147,6 +165,32 @@ class _ConnectMainState extends State<ConnectMain> {
                     fontWeight: FontWeight.bold),
               ),
             ),
+          ),
+          Divider(
+            height: 30,
+            thickness: 1,
+            color: Colors.grey.shade400,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              IconButton(
+                  onPressed: () {
+                    setState(() {
+                      if (liked.contains(post['postId'])) {
+                        liked.remove(post['postId']);
+                      } else {
+                        liked.add(post['postId']);
+                      }
+                    });
+                  },
+                  icon: Icon(liked.contains(post['postId'])  ? Icons.thumb_up_alt : Icons.thumb_up_alt_outlined)),
+              SizedBox(width: 10),
+              IconButton(onPressed: () {}, icon: Icon(Icons.comment_outlined)),
+              Spacer(),
+              IconButton(onPressed: () {}, icon: Icon(Icons.share)),
+            ],
           )
         ],
       ),
