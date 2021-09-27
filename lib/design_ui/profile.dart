@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cia_client/design_ui/add_education.dart';
 import 'package:cia_client/design_ui/drawer.dart';
 import 'package:cia_client/storage_manager.dart';
+import 'package:cia_client/user_repository.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -34,12 +35,22 @@ class _ProfileScreenState extends State<ProfileScreen> {
         userId = value;
       });
     });
+    getEducation();
     super.initState();
   }
 
   String email = "";
   String username = "";
   String userId = "";
+  List education = [];
+
+  Future getEducation() async {
+    var _edu = await UserRepository().getEducation();
+    print(_edu);
+    setState(() {
+      education = _edu;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -156,50 +167,74 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   color: Colors.grey.shade300,
                   borderRadius: BorderRadius.circular(25),
                 ),
-                child: ListView(
-                  children: [
-                    Text(
-                      "Education 1:",
-                      style: TextStyle(
-                        color: primaryColor,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 18,
-                      ),
-                    ),
-                    SizedBox(height: 15),
-                    Text(
-                      "MCA",
-                      style: TextStyle(
-                        color: Colors.black54,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 18,
-                      ),
-                    ),
-                    SizedBox(height: 10),
-                    Text(
-                      "RVS College of Arts and Science",
-                      style: TextStyle(
-                        color: Colors.black54,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 18,
-                      ),
-                    ),
-                    SizedBox(height: 10),
-                    Text(
-                      "2020 - 2022",
-                      style: TextStyle(
-                        color: Colors.black54,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 18,
-                      ),
-                    ),
-                    Divider(
-                      height: 30,
-                      thickness: 0.7,
-                      color: Colors.black87,
-                    ),
-                  ],
-                ),
+                child: ListView.builder(
+                    itemCount: education.length,
+                    itemBuilder: (ctx, index) {
+                      return Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "Education: ${index + 1}",
+                            style: TextStyle(
+                              color: primaryColor,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 18,
+                            ),
+                          ),
+                          SizedBox(height: 15),
+                          Text(
+                            education[index]['degree'],
+                            style: TextStyle(
+                              color: Colors.black54,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 18,
+                            ),
+                          ),
+                          SizedBox(height: 10),
+                          Text(
+                            education[index]['field'],
+                            style: TextStyle(
+                              color: Colors.black54,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 18,
+                            ),
+                          ),
+                          SizedBox(height: 10),
+                          Text(
+                            "University: " + education[index]['university'],
+                            style: TextStyle(
+                              color: Colors.black54,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 18,
+                            ),
+                          ),
+                          SizedBox(height: 10),
+                          Text(
+                            "Grade: " + education[index]['grade'],
+                            style: TextStyle(
+                              color: Colors.black54,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 18,
+                            ),
+                          ),
+                          SizedBox(height: 10),
+                          Text(
+                            ("Batch: ${education[index]['startYear']} - ${education[index]['endYear']}"),
+                            style: TextStyle(
+                              color: Colors.black54,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 18,
+                            ),
+                          ),
+                          Divider(
+                            height: 30,
+                            thickness: 0.7,
+                            color: Colors.black87,
+                          ),
+                        ],
+                      );
+                    }),
               ),
               SizedBox(height: 30),
               Row(

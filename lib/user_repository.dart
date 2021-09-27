@@ -80,4 +80,11 @@ class UserRepository {
       }
     }
   }
+
+  Future getEducation() async {
+    String email = await StorageManager.readData("email");
+    var cache = await APICacheManager().getCacheData(email);
+    Map user = jsonDecode(cache.syncData);
+    return user['education'];
+  }
 }
