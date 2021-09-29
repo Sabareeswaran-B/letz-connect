@@ -3,8 +3,10 @@ import 'package:cia_client/constant.dart';
 import 'package:cia_client/design_ui/drawer.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:page_indicator/page_indicator.dart';
 
-import '../data.dart';
+import '../utils/data.dart';
+import '../utils/model.dart';
 
 class ConnectMain extends StatefulWidget {
   const ConnectMain({Key? key}) : super(key: key);
@@ -16,13 +18,12 @@ class ConnectMain extends StatefulWidget {
 class _ConnectMainState extends State<ConnectMain> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
-
   List liked = [];
 
-  Widget postWidget(post) {
+  Widget postWidget(Post post) {
     return Container(
       margin: EdgeInsets.fromLTRB(15, 15, 15, 0),
-      padding: EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+      padding: EdgeInsets.symmetric(horizontal: 15, vertical: 5),
       constraints: BoxConstraints(
         minHeight: 180,
       ),
@@ -39,77 +40,59 @@ class _ConnectMainState extends State<ConnectMain> {
           ]),
       child: Column(
         children: [
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Align(
-                alignment: Alignment.topLeft,
-                child: Container(
-                  height: 40,
-                  width: 40,
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(45),
-                    child: CachedNetworkImage(
-                      imageUrl: post['imageUrl'],
-                      placeholder: (context, url) =>
-                          CupertinoActivityIndicator(),
-                    ),
-                  ),
+          ListTile(
+            contentPadding: EdgeInsets.zero,
+            leading: Container(
+              height: 40,
+              width: 40,
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(45),
+                child: CachedNetworkImage(
+                  imageUrl: post.imageUrl,
+                  placeholder: (context, url) => CupertinoActivityIndicator(),
                 ),
               ),
-              SizedBox(width: 10),
-              Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Align(
-                    alignment: Alignment.topLeft,
-                    child: Container(
-                      // padding: EdgeInsets.only(top: 5),
-                      child: Text(
-                        post['username'],
-                        style: TextStyle(
-                            color: Colors.black87, fontWeight: FontWeight.bold),
-                      ),
-                    ),
-                  ),
-                  Align(
-                    alignment: Alignment.topLeft,
-                    child: Container(
-                      padding: EdgeInsets.only(top: 5),
-                      child: Text(
-                        post['created_At'],
-                        style: TextStyle(
-                            color: Colors.grey,
-                            fontSize: 10,
-                            fontWeight: FontWeight.bold),
-                      ),
-                    ),
-                  ),
-                ],
+            ),
+            title: Container(
+              // padding: EdgeInsets.only(top: 5),
+              child: Text(
+                post.username,
+                style: TextStyle(
+                  color: Colors.black87,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
-              Spacer(),
-              DropdownButton<String>(
-                icon: Icon(Icons.more_vert),
-                underline: SizedBox(),
-                items:
-                    <String>['Connect', 'Block', 'Report'].map((String value) {
-                  return DropdownMenuItem<String>(
-                    value: value,
-                    child: Text(value),
-                  );
-                }).toList(),
-                onChanged: (_) {},
+            ),
+            subtitle: Container(
+              padding: EdgeInsets.only(top: 5),
+              child: Text(
+                post.createdAt,
+                style: TextStyle(
+                  color: Colors.grey,
+                  fontSize: 10,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
-            ],
+            ),
+            trailing: DropdownButton<String>(
+              icon: Icon(Icons.more_vert),
+              underline: SizedBox(),
+              items: <String>['Connect', 'Block', 'Report'].map((String value) {
+                return DropdownMenuItem<String>(
+                  value: value,
+                  child: Text(value),
+                );
+              }).toList(),
+              onChanged: (_) {},
+            ),
           ),
-          SizedBox(height: 20),
+          SizedBox(height: 5),
           Align(
             alignment: Alignment.topLeft,
             child: Container(
               padding: EdgeInsets.only(top: 5),
               child: Text(
-                post['message']['title'],
+                post.message.title,
                 style: TextStyle(
                     color: Colors.black87,
                     fontSize: 18,
@@ -123,7 +106,7 @@ class _ConnectMainState extends State<ConnectMain> {
             child: Container(
               padding: EdgeInsets.only(top: 5),
               child: Text(
-                post['message']['description'],
+                post.message.description,
                 style: TextStyle(
                     color: Colors.black54,
                     fontSize: 18,
@@ -132,15 +115,34 @@ class _ConnectMainState extends State<ConnectMain> {
             ),
           ),
           SizedBox(height: 15),
-          post['attachments']['url'] == ""
+          post.attachments[0].url.isEmpty
               ? SizedBox()
               : Container(
+                  height: MediaQuery.of(context).size.height / 3.4,
                   alignment: Alignment.center,
                   constraints: BoxConstraints(minHeight: 100),
                   decoration: BoxDecoration(color: Colors.grey.shade400),
-                  child: Image.asset(
-                    post['attachments']['url'],
-                  ),
+                  child: post.attachments.length == 1
+                      ? Image.asset(
+                          post.attachments[0].url,
+                          fit: BoxFit.cover,
+                        )
+                      : PageIndicatorContainer(
+                          length: post.attachments.length,
+                          align: IndicatorAlign.bottom,
+                          indicatorColor: Colors.grey,
+                          indicatorSelectorColor: primaryColor,
+                          shape: IndicatorShape.circle(size: 8),
+                          child: PageView.builder(
+                            itemCount: post.attachments.length,
+                            itemBuilder: (context, index) {
+                              return Image.asset(
+                                post.attachments[index].url,
+                                fit: BoxFit.cover,
+                              );
+                            },
+                          ),
+                        ),
                 ),
           Divider(
             height: 30,
@@ -154,14 +156,14 @@ class _ConnectMainState extends State<ConnectMain> {
               IconButton(
                   onPressed: () {
                     setState(() {
-                      if (liked.contains(post['postId'])) {
-                        liked.remove(post['postId']);
+                      if (liked.contains(post.postId)) {
+                        liked.remove(post.postId);
                       } else {
-                        liked.add(post['postId']);
+                        liked.add(post.postId);
                       }
                     });
                   },
-                  icon: Icon(liked.contains(post['postId'])
+                  icon: Icon(liked.contains(post.postId)
                       ? Icons.thumb_up_alt
                       : Icons.thumb_up_alt_outlined)),
               SizedBox(width: 10),
@@ -193,9 +195,12 @@ class _ConnectMainState extends State<ConnectMain> {
           centerTitle: true,
           title: Text("Letz Connect"),
         ),
-        body: ListView(
+        body: Container(
+          child: ListView(
             padding: EdgeInsets.only(bottom: 15),
-            children: data.map((post) => postWidget(post)).toList()),
+            children: posts.map((post) => postWidget(post)).toList(),
+          ),
+        ),
       ),
     );
   }

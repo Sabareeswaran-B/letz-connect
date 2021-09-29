@@ -3,7 +3,8 @@ import 'dart:async';
 import 'package:cia_client/constant.dart';
 import 'package:cia_client/design_ui/connect_main.dart';
 import 'package:cia_client/design_ui/signup.dart';
-import 'package:cia_client/user_repository.dart';
+import 'package:cia_client/utils/navigation.dart';
+import 'package:cia_client/utils/user_repository.dart';
 import 'package:flutter/cupertino.dart';
 // import 'package:cia_client/user_repository.dart';
 import 'package:flutter/material.dart';
@@ -46,10 +47,9 @@ class _SigninScreenState extends State<SigninScreen> {
         if (user['success'] == true) {
           print(user);
           Timer(Duration(milliseconds: 500), () {
-            Navigator.of(context).push(
-              MaterialPageRoute(
-                builder: (builder) => ConnectMain(),
-              ),
+            Go.toWithoutTrail(
+              context,
+              ConnectMain(),
             );
           });
         }
@@ -91,7 +91,7 @@ class _SigninScreenState extends State<SigninScreen> {
         appBar: AppBar(
           leading: IconButton(
             onPressed: () {
-              Navigator.pop(context);
+              Go.back(context);
             },
             icon: Icon(
               Icons.chevron_left,
@@ -251,8 +251,7 @@ class _SigninScreenState extends State<SigninScreen> {
                         onPressed: () {}, child: Text("New to LetzConnect? ")),
                     TextButton(
                         onPressed: () {
-                          Navigator.of(context).push(MaterialPageRoute(
-                              builder: (builder) => SignupScreen()));
+                          Go.to(context, SignupScreen());
                         },
                         child: Text("Create New Account"))
                   ],

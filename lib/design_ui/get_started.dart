@@ -1,6 +1,7 @@
 import 'package:cia_client/constant.dart';
 import 'package:cia_client/design_ui/signin.dart';
 import 'package:cia_client/design_ui/signup.dart';
+import 'package:cia_client/utils/navigation.dart';
 import 'package:flutter/material.dart';
 
 class IntroScreen extends StatefulWidget {
@@ -65,8 +66,7 @@ class _IntroScreenState extends State<IntroScreen> {
                 ),
                 child: TextButton(
                   onPressed: () {
-                    Navigator.of(context).push(MaterialPageRoute(
-                        builder: (builder) => SignupScreen()));
+                    Go.to(context, SignupScreen());
                   },
                   child: Text(
                     "Sign up",
@@ -94,8 +94,7 @@ class _IntroScreenState extends State<IntroScreen> {
                 ),
                 child: TextButton(
                   onPressed: () {
-                    Navigator.of(context).push(MaterialPageRoute(
-                        builder: (builder) => SigninScreen()));
+                    Go.to(context, SigninScreen());
                   },
                   child: Text(
                     "Sign in",

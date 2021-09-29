@@ -2,7 +2,8 @@ import 'dart:async';
 
 import 'package:cia_client/design_ui/connect_main.dart';
 import 'package:cia_client/design_ui/drawer.dart';
-import 'package:cia_client/user_repository.dart';
+import 'package:cia_client/utils/navigation.dart';
+import 'package:cia_client/utils/user_repository.dart';
 import 'package:flutter/material.dart';
 
 import '../constant.dart';
@@ -43,12 +44,7 @@ class _AddEducationState extends State<AddEducation> {
     print("user $res");
     if (res != null) {
       Timer(Duration(milliseconds: 500), () {
-        Navigator.of(context).pushAndRemoveUntil(
-          MaterialPageRoute(
-            builder: (builder) => ConnectMain(),
-          ),
-          (route) => false,
-        );
+        Go.toWithoutTrail(context, ConnectMain());
       });
     }
   }
@@ -64,9 +60,9 @@ class _AddEducationState extends State<AddEducation> {
         backgroundColor: primaryColor,
         leading: IconButton(
           onPressed: () {
-            _scaffoldKey.currentState!.openDrawer();
+            Go.back(context);
           },
-          icon: Icon(Icons.menu, color: Colors.white, size: 30),
+          icon: Icon(Icons.chevron_left, color: Colors.white, size: 30),
         ),
         centerTitle: true,
         title: Text("Letz Connect"),
@@ -243,7 +239,7 @@ class _AddEducationState extends State<AddEducation> {
                                           startYear.text =
                                               dateTime.year.toString();
                                         });
-                                        Navigator.pop(context);
+                                        Go.back(context);
                                       },
                                     ),
                                   ),
@@ -294,7 +290,7 @@ class _AddEducationState extends State<AddEducation> {
                                           endYear.text =
                                               dateTime.year.toString();
                                         });
-                                        Navigator.pop(context);
+                                        Go.back(context);
                                       },
                                     ),
                                   ),

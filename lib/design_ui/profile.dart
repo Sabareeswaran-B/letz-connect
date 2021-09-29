@@ -1,8 +1,9 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cia_client/design_ui/add_education.dart';
 import 'package:cia_client/design_ui/drawer.dart';
-import 'package:cia_client/storage_manager.dart';
-import 'package:cia_client/user_repository.dart';
+import 'package:cia_client/utils/navigation.dart';
+import 'package:cia_client/utils/storage_manager.dart';
+import 'package:cia_client/utils/user_repository.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -139,8 +140,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   ),
                   TextButton(
                     onPressed: () {
-                      Navigator.of(context).push(MaterialPageRoute(
-                          builder: (builder) => AddEducation()));
+                      Go.to(context, AddEducation());
                     },
                     child: Container(
                       padding:

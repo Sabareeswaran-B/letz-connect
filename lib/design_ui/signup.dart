@@ -3,7 +3,8 @@ import 'dart:async';
 import 'package:cia_client/constant.dart';
 import 'package:cia_client/design_ui/connect_main.dart';
 import 'package:cia_client/design_ui/signin.dart';
-import 'package:cia_client/user_repository.dart';
+import 'package:cia_client/utils/navigation.dart';
+import 'package:cia_client/utils/user_repository.dart';
 import 'package:flutter/material.dart';
 
 class SignupScreen extends StatefulWidget {
@@ -41,10 +42,9 @@ class _SignupScreenState extends State<SignupScreen> {
           .signup(_userName.text, _email.text, _password.text);
       if (user['success'] == true) {
         Timer(Duration(milliseconds: 500), () {
-          Navigator.of(context).push(
-            MaterialPageRoute(
-              builder: (builder) => ConnectMain(),
-            ),
+          Go.toWithoutTrail(
+            context,
+            ConnectMain(),
           );
         });
       }
@@ -96,7 +96,7 @@ class _SignupScreenState extends State<SignupScreen> {
         appBar: AppBar(
           leading: IconButton(
             onPressed: () {
-              Navigator.pop(context);
+              Go.back(context);
             },
             icon: Icon(
               Icons.chevron_left,
@@ -360,8 +360,7 @@ class _SignupScreenState extends State<SignupScreen> {
                         child: Text("Already have an account? ")),
                     TextButton(
                         onPressed: () {
-                          Navigator.of(context).push(MaterialPageRoute(
-                              builder: (builder) => SigninScreen()));
+                          Go.to(context, SigninScreen());
                         },
                         child: Text("Login"))
                   ],

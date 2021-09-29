@@ -4,9 +4,11 @@ import 'package:cached_network_image/cached_network_image.dart';
 // ignore: unused_import
 import 'package:cia_client/constant.dart';
 import 'package:cia_client/design_ui/connect_main.dart';
+import 'package:cia_client/design_ui/educations.dart';
 import 'package:cia_client/design_ui/get_started.dart';
 import 'package:cia_client/design_ui/profile.dart';
-import 'package:cia_client/storage_manager.dart';
+import 'package:cia_client/utils/navigation.dart';
+import 'package:cia_client/utils/storage_manager.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -71,8 +73,7 @@ class _DrawerScreenState extends State<DrawerScreen> {
                 children: [
                   InkWell(
                     onTap: () {
-                      Navigator.of(context).push(MaterialPageRoute(
-                          builder: (builder) => ProfileScreen()));
+                      Go.to(context, ProfileScreen());
                     },
                     child: Align(
                       alignment: Alignment.topLeft,
@@ -94,8 +95,7 @@ class _DrawerScreenState extends State<DrawerScreen> {
                   Spacer(),
                   InkWell(
                     onTap: () {
-                      Navigator.of(context).push(MaterialPageRoute(
-                          builder: (builder) => ProfileScreen()));
+                      Go.to(context, ProfileScreen());
                     },
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -121,15 +121,16 @@ class _DrawerScreenState extends State<DrawerScreen> {
                 children: <Widget>[
                   ListTile(
                     onTap: () {
-                      Navigator.of(context).push(MaterialPageRoute(
-                          builder: (builder) => ConnectMain()));
+                      Go.to(context, ConnectMain());
                     },
                     leading: Icon(Icons.home),
                     title: Text("Home"),
                     trailing: Icon(Icons.chevron_right),
                   ),
                   ListTile(
-                    onTap: () {},
+                    onTap: () {
+                      Go.to(context, EducationScreen());
+                    },
                     leading: Icon(Icons.menu_book),
                     title: Text("Education & Carear"),
                     trailing: Icon(Icons.chevron_right),
@@ -162,10 +163,9 @@ class _DrawerScreenState extends State<DrawerScreen> {
                     onTap: () async {
                       await StorageManager.clear();
                       // await APICacheManager().emptyCache();
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (builder) => IntroScreen(),
-                        ),
+                      Go.toWithoutTrail(
+                        context,
+                        IntroScreen(),
                       );
                     },
                     leading: Icon(Icons.logout),

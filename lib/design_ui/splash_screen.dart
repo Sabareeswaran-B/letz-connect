@@ -2,7 +2,8 @@ import 'dart:async';
 
 import 'package:cia_client/design_ui/connect_main.dart';
 import 'package:cia_client/design_ui/get_started.dart';
-import 'package:cia_client/storage_manager.dart';
+import 'package:cia_client/utils/navigation.dart';
+import 'package:cia_client/utils/storage_manager.dart';
 import 'package:flutter/material.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -19,19 +20,13 @@ class _SplashScreenState extends State<SplashScreen> {
     StorageManager.readData("userId").then((value) {
       if (value == null || value == "") {
         Timer(Duration(milliseconds: 500), () {
-          Navigator.of(context).push(
-            MaterialPageRoute(
-              builder: (builder) => IntroScreen(),
-            ),
+          Go.toWithoutTrail(context, IntroScreen(),
           );
         });
       } else {
         print("value $value");
         Timer(Duration(milliseconds: 500), () {
-          Navigator.of(context).push(
-            MaterialPageRoute(
-              builder: (builder) => ConnectMain(),
-            ),
+          Go.toWithoutTrail(context, ConnectMain(),
           );
         });
       }
