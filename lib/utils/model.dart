@@ -14,6 +14,7 @@ class Post {
         required this.imageUrl,
         required this.username,
         required this.createdAt,
+        required this.liked,
         required this.message,
         required this.attachments,
     });
@@ -22,6 +23,7 @@ class Post {
     String imageUrl;
     String username;
     String createdAt;
+    List<String> liked;
     Message message;
     List<Attachment> attachments;
 
@@ -30,6 +32,7 @@ class Post {
         imageUrl: json["imageUrl"],
         username: json["username"],
         createdAt: json["created_At"],
+        liked: List<String>.from(json["liked"].map((x) => x)),
         message: Message.fromJson(json["message"]),
         attachments: List<Attachment>.from(json["attachments"].map((x) => Attachment.fromJson(x))),
     );
@@ -39,6 +42,7 @@ class Post {
         "imageUrl": imageUrl,
         "username": username,
         "created_At": createdAt,
+        "liked" : List<String>.from(liked.map((x) => x)),
         "message": message.toJson(),
         "attachments": List<dynamic>.from(attachments.map((x) => x.toJson())),
     };

@@ -1,7 +1,6 @@
 import 'dart:async';
 
-import 'package:cia_client/design_ui/connect_main.dart';
-import 'package:cia_client/design_ui/drawer.dart';
+import 'package:cia_client/design_ui/profile.dart';
 import 'package:cia_client/utils/navigation.dart';
 import 'package:cia_client/utils/user_repository.dart';
 import 'package:flutter/material.dart';
@@ -16,7 +15,6 @@ class AddEducation extends StatefulWidget {
 }
 
 class _AddEducationState extends State<AddEducation> {
-  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   final TextEditingController university = TextEditingController();
   final TextEditingController degree = TextEditingController();
   final TextEditingController field = TextEditingController();
@@ -44,7 +42,7 @@ class _AddEducationState extends State<AddEducation> {
     print("user $res");
     if (res != null) {
       Timer(Duration(milliseconds: 500), () {
-        Go.toWithoutTrail(context, ConnectMain());
+        Go.toWithoutTrail(context, ProfileScreen());
       });
     }
   }
@@ -53,8 +51,6 @@ class _AddEducationState extends State<AddEducation> {
   Widget build(BuildContext context) {
     return SafeArea(
         child: Scaffold(
-      drawer: DrawerScreen(),
-      key: _scaffoldKey,
       backgroundColor: backgroundColor,
       appBar: AppBar(
         backgroundColor: primaryColor,
@@ -65,7 +61,7 @@ class _AddEducationState extends State<AddEducation> {
           icon: Icon(Icons.chevron_left, color: Colors.white, size: 30),
         ),
         centerTitle: true,
-        title: Text("Letz Connect"),
+        title: Text("Add Education"),
       ),
       body: SingleChildScrollView(
         padding: EdgeInsets.all(25),

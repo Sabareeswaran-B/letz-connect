@@ -7,6 +7,7 @@ List data = [
         "https://cdn.landesa.org/wp-content/uploads/default-user-image.png",
     "username": "Sabareeswaran B",
     "created_At": "July 25, 2021",
+    "liked" : [],
     "message": {
       "title": "Internship",
       "description": "Started working at Smartchainers pvt. from July, 2021",
@@ -24,6 +25,7 @@ List data = [
         "https://cdn.landesa.org/wp-content/uploads/default-user-image.png",
     "username": "Gopi",
     "created_At": "July 24, 2021",
+    "liked" : [],
     "message": {
       "title": "selected as an intern",
       "description":
@@ -42,6 +44,7 @@ List data = [
         "https://cdn.landesa.org/wp-content/uploads/default-user-image.png",
     "username": "Sabareeswaran B",
     "created_At": "August 15, 2020",
+    "liked" : [],
     "message": {
       "title": "MCA",
       "description":
@@ -60,6 +63,7 @@ List data = [
         "https://cdn.landesa.org/wp-content/uploads/default-user-image.png",
     "username": "Stalin",
     "created_At": "August 14, 2021",
+    "liked" : [],
     "message": {
       "title": "Joining PG",
       "description":
@@ -78,6 +82,7 @@ List data = [
         "https://cdn.landesa.org/wp-content/uploads/default-user-image.png",
     "username": "Sabareeswaran B",
     "created_At": "October 17, 2020",
+    "liked" : [],
     "message": {
       "title": "Aws in Coursera",
       "description":

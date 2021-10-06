@@ -5,12 +5,14 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cia_client/constant.dart';
 import 'package:cia_client/design_ui/connect_main.dart';
 import 'package:cia_client/design_ui/educations.dart';
+import 'package:cia_client/design_ui/experience.dart';
 import 'package:cia_client/design_ui/get_started.dart';
 import 'package:cia_client/design_ui/profile.dart';
 import 'package:cia_client/utils/navigation.dart';
 import 'package:cia_client/utils/storage_manager.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class DrawerScreen extends StatefulWidget {
   const DrawerScreen({Key? key}) : super(key: key);
@@ -123,7 +125,7 @@ class _DrawerScreenState extends State<DrawerScreen> {
                     onTap: () {
                       Go.to(context, ConnectMain());
                     },
-                    leading: Icon(Icons.home),
+                    leading: Icon(FontAwesomeIcons.home),
                     title: Text("Home"),
                     trailing: Icon(Icons.chevron_right),
                   ),
@@ -131,31 +133,33 @@ class _DrawerScreenState extends State<DrawerScreen> {
                     onTap: () {
                       Go.to(context, EducationScreen());
                     },
-                    leading: Icon(Icons.menu_book),
+                    leading: Icon(FontAwesomeIcons.bookOpen),
                     title: Text("Education & Carear"),
                     trailing: Icon(Icons.chevron_right),
                   ),
                   ListTile(
-                    onTap: () {},
-                    leading: Icon(Icons.work),
+                    onTap: () {
+                      Go.to(context, ExperienceScreen());
+                    },
+                    leading: Icon(FontAwesomeIcons.briefcase),
                     title: Text("Experience"),
                     trailing: Icon(Icons.chevron_right),
                   ),
                   ListTile(
                     onTap: () {},
-                    leading: Icon(Icons.connect_without_contact),
+                    leading: Icon(FontAwesomeIcons.link),
                     title: Text("Connect to people"),
                     trailing: Icon(Icons.chevron_right),
                   ),
                   ListTile(
                     onTap: () {},
-                    leading: Icon(Icons.connect_without_contact_outlined),
+                    leading: Icon(FontAwesomeIcons.link),
                     title: Text("My Connectionz"),
                     trailing: Icon(Icons.chevron_right),
                   ),
                   ListTile(
                     onTap: () {},
-                    leading: Icon(Icons.person),
+                    leading: Icon(FontAwesomeIcons.solidUser),
                     title: Text("Share Profile"),
                     trailing: Icon(Icons.chevron_right),
                   ),
@@ -168,7 +172,7 @@ class _DrawerScreenState extends State<DrawerScreen> {
                         IntroScreen(),
                       );
                     },
-                    leading: Icon(Icons.logout),
+                    leading: Icon(FontAwesomeIcons.signOutAlt),
                     title: Text("Logout"),
                     trailing: Icon(Icons.chevron_right),
                   ),

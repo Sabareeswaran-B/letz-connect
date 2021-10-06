@@ -87,4 +87,102 @@ class UserRepository {
     Map user = jsonDecode(cache.syncData);
     return user['education'];
   }
+
+  Future addExperience(Map object) async {
+    String email = await StorageManager.readData("email");
+    var cache = await APICacheManager().getCacheData(email);
+    Map user = jsonDecode(cache.syncData);
+
+    List exp = [];
+    exp.add(object);
+    user.update("experience", (value) => exp);
+
+    String source = jsonEncode(user);
+
+    bool deleted = await APICacheManager().deleteCache(email);
+
+    if (deleted) {
+      APICacheDBModel cacheDBModel =
+          new APICacheDBModel(key: email, syncData: source);
+
+      bool isSaved = await APICacheManager().addCacheData(cacheDBModel);
+      if (isSaved) {
+        return user;
+      }
+    }
+  }
+
+  Future getExperience() async {
+    String email = await StorageManager.readData("email");
+    var cache = await APICacheManager().getCacheData(email);
+    Map user = jsonDecode(cache.syncData);
+    return user['experience'];
+  }
+
+  Future getAllPosts() async {
+    var value = await StorageManager.readData("userId").then((value) async {
+      if (value != null) {
+        var res = await APICacheManager().getCacheData("post");
+        Map postCache = jsonDecode(res.syncData);
+        print(postCache);
+        return postCache['post'];
+      }
+    });
+    return value;
+  }
+
+  Future getSinglePost(String postId) async {
+    List value = await StorageManager.readData("userId").then((value) async {
+      if (value != null) {
+        var res = await APICacheManager().getCacheData("post");
+        Map postCache = jsonDecode(res.syncData);
+        print(postCache);
+        return postCache['post'];
+      } else {
+        return [];
+      }
+    });
+    value.retainWhere((post) => post['postId'] == postId);
+    return value;
+  }
+
+  Future like(String postId, String userId) async {
+    List allPost = await getAllPosts();
+    List posts = allPost.map((post) {
+      if (post['postId'] == postId) {
+        List liked = post['liked'];
+        liked.add(userId);
+        post.update("liked", (value) => liked);
+        return post;
+      } else {
+        return post;
+      }
+    }).toList();
+    Map obj = {"post": posts};
+    String source = jsonEncode(obj);
+    APICacheDBModel cacheDBModel =
+        new APICacheDBModel(key: "post", syncData: source);
+
+    await APICacheManager().addCacheData(cacheDBModel);
+  }
+
+  Future disLike(String postId, String userId) async {
+    List allPost = await getAllPosts();
+    List posts = allPost.map((post) {
+      if (post['postId'] == postId) {
+        List liked = post['liked'];
+        liked.remove(userId);
+        post.update("liked", (value) => liked);
+        return post;
+      } else {
+        return post;
+      }
+    }).toList();
+    Map obj = {"post": posts};
+    String source = jsonEncode(obj);
+    APICacheDBModel cacheDBModel =
+        new APICacheDBModel(key: "post", syncData: source);
+
+    await APICacheManager().addCacheData(cacheDBModel);
+  }
 }

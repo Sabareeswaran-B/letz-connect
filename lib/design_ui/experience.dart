@@ -6,28 +6,27 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../constant.dart';
 import '../utils/user_repository.dart';
 
-class EducationScreen extends StatefulWidget {
-  const EducationScreen({Key? key}) : super(key: key);
+class ExperienceScreen extends StatefulWidget {
+  const ExperienceScreen({Key? key}) : super(key: key);
 
   @override
-  _EducationScreenState createState() => _EducationScreenState();
+  _ExperienceScreenState createState() => _ExperienceScreenState();
 }
 
-class _EducationScreenState extends State<EducationScreen> {
+class _ExperienceScreenState extends State<ExperienceScreen> {
   @override
   void initState() {
-    getEducation();
+    getExperience();
     super.initState();
   }
 
-  List<Education> education = [];
+  List<Experience> experience = [];
 
-  Future getEducation() async {
-    var _edu = await UserRepository().getEducation();
-    print(_edu);
+  Future getExperience() async {
+    var _exp = await UserRepository().getExperience();
+    print(_exp);
     setState(() {
-      education =
-          _edu.map<Education>((json) => Education.fromJson(json)).toList();
+      experience = _exp.map<Experience>((e) => Experience.fromJson(e)).toList();
     });
   }
 
@@ -78,13 +77,13 @@ class _EducationScreenState extends State<EducationScreen> {
             icon: Icon(Icons.chevron_left, color: Colors.white, size: 30),
           ),
           centerTitle: true,
-          title: Text("Education"),
+          title: Text("Experience"),
         ),
-        body: education.isEmpty
+        body: experience.isEmpty
             ? Center(child: CircularProgressIndicator(color: primaryColor))
             : ListView.builder(
                 padding: EdgeInsets.all(10),
-                itemCount: education.length,
+                itemCount: experience.length,
                 itemBuilder: (context, index) {
                   return Container(
                     padding: EdgeInsets.all(25),
@@ -104,7 +103,7 @@ class _EducationScreenState extends State<EducationScreen> {
                     child: Column(
                       children: [
                         Text(
-                          "Education: ${index + 1}",
+                          "Experience: ${index + 1}",
                           style: TextStyle(
                             color: primaryColor,
                             fontWeight: FontWeight.bold,
@@ -114,30 +113,14 @@ class _EducationScreenState extends State<EducationScreen> {
                         Divider(
                             height: 10, thickness: 0.7, color: Colors.black),
                         SizedBox(height: 10),
-                        content(
-                            "Institution/University",
-                            education[index].university,
-                            FontAwesomeIcons.university),
+                        content("Job Roll", experience[index].jobroll,
+                            FontAwesomeIcons.briefcase),
                         divider,
-                        content("Degree", education[index].degree,
-                            FontAwesomeIcons.userGraduate),
+                        content("Company name", experience[index].companyname,
+                            FontAwesomeIcons.building),
                         divider,
-                        content("Field of study", education[index].field,
-                            FontAwesomeIcons.bookOpen),
-                        divider,
-                        content("Grade", education[index].grade,
-                            FontAwesomeIcons.percentage),
-                        divider,
-                        content(
-                            "Batch",
-                            "${education[index].startYear} - ${education[index].endYear}",
+                        content("Stated year", experience[index].started,
                             FontAwesomeIcons.calendarAlt),
-                        divider,
-                        content("Activities", education[index].activities,
-                            FontAwesomeIcons.running),
-                        divider,
-                        content("Desctiption", education[index].description,
-                            FontAwesomeIcons.penAlt),
                         divider,
                       ],
                     ),

@@ -1,6 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cia_client/design_ui/add_education.dart';
+import 'package:cia_client/design_ui/add_experience.dart';
 import 'package:cia_client/design_ui/drawer.dart';
+import 'package:cia_client/utils/model.dart';
 import 'package:cia_client/utils/navigation.dart';
 import 'package:cia_client/utils/storage_manager.dart';
 import 'package:cia_client/utils/user_repository.dart';
@@ -19,6 +21,7 @@ class ProfileScreen extends StatefulWidget {
 class _ProfileScreenState extends State<ProfileScreen> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   final ScrollController _educationController = ScrollController();
+  final ScrollController _experienceController = ScrollController();
 
   @override
   void initState() {
@@ -38,19 +41,30 @@ class _ProfileScreenState extends State<ProfileScreen> {
       });
     });
     getEducation();
+    getExperience();
     super.initState();
   }
 
   String email = "";
   String username = "";
   String userId = "";
-  List education = [];
+  List<Education> education = [];
+  List<Experience> experience = [];
 
   Future getEducation() async {
     var _edu = await UserRepository().getEducation();
     print(_edu);
     setState(() {
-      education = _edu;
+      education =
+          _edu.map<Education>((json) => Education.fromJson(json)).toList();
+    });
+  }
+
+  Future getExperience() async {
+    var _exp = await UserRepository().getExperience();
+    print(_exp);
+    setState(() {
+      experience = _exp.map<Experience>((e) => Experience.fromJson(e)).toList();
     });
   }
 
@@ -168,79 +182,86 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   color: Colors.grey.shade300,
                   borderRadius: BorderRadius.circular(25),
                 ),
-                child: CupertinoScrollbar(
-                  controller: _educationController,
-                  isAlwaysShown: true,
-                  child: ListView.builder(
-                      controller: _educationController,
-                      itemCount: education.length,
-                      itemBuilder: (ctx, index) {
-                        return Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "Education: ${index + 1}",
-                              style: TextStyle(
-                                color: primaryColor,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 18,
-                              ),
-                            ),
-                            SizedBox(height: 15),
-                            Text(
-                              education[index]['degree'],
-                              style: TextStyle(
-                                color: Colors.black54,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 18,
-                              ),
-                            ),
-                            SizedBox(height: 10),
-                            Text(
-                              education[index]['field'],
-                              style: TextStyle(
-                                color: Colors.black54,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 18,
-                              ),
-                            ),
-                            SizedBox(height: 10),
-                            Text(
-                              "University: " + education[index]['university'],
-                              style: TextStyle(
-                                color: Colors.black54,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 18,
-                              ),
-                            ),
-                            SizedBox(height: 10),
-                            Text(
-                              "Grade: " + education[index]['grade'],
-                              style: TextStyle(
-                                color: Colors.black54,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 18,
-                              ),
-                            ),
-                            SizedBox(height: 10),
-                            Text(
-                              ("Batch: ${education[index]['startYear']} - ${education[index]['endYear']}"),
-                              style: TextStyle(
-                                color: Colors.black54,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 18,
-                              ),
-                            ),
-                            Divider(
-                              height: 30,
-                              thickness: 0.7,
-                              color: Colors.black87,
-                            ),
-                          ],
-                        );
-                      }),
-                ),
+                child: education.length == 0
+                    ? Center(
+                        child: Text(
+                        "No Education added yet!",
+                        style: TextStyle(color: Colors.grey),
+                      ))
+                    : CupertinoScrollbar(
+                        controller: _educationController,
+                        isAlwaysShown: true,
+                        child: ListView.builder(
+                            controller: _educationController,
+                            itemCount: education.length,
+                            itemBuilder: (ctx, index) {
+                              return Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    "Education: ${index + 1}",
+                                    style: TextStyle(
+                                      color: primaryColor,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 18,
+                                    ),
+                                  ),
+                                  SizedBox(height: 15),
+                                  Text(
+                                    education[index].degree,
+                                    style: TextStyle(
+                                      color: Colors.black54,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 18,
+                                    ),
+                                  ),
+                                  SizedBox(height: 10),
+                                  Text(
+                                    education[index].field,
+                                    style: TextStyle(
+                                      color: Colors.black54,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 18,
+                                    ),
+                                  ),
+                                  SizedBox(height: 10),
+                                  Text(
+                                    "University: " +
+                                        education[index].university,
+                                    style: TextStyle(
+                                      color: Colors.black54,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 18,
+                                    ),
+                                  ),
+                                  SizedBox(height: 10),
+                                  Text(
+                                    "Grade: " + education[index].grade,
+                                    style: TextStyle(
+                                      color: Colors.black54,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 18,
+                                    ),
+                                  ),
+                                  SizedBox(height: 10),
+                                  Text(
+                                    ("Batch: ${education[index].startYear} - ${education[index].endYear}"),
+                                    style: TextStyle(
+                                      color: Colors.black54,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 18,
+                                    ),
+                                  ),
+                                  Divider(
+                                    height: 30,
+                                    thickness: 0.7,
+                                    color: Colors.black87,
+                                  ),
+                                ],
+                              );
+                            }),
+                      ),
               ),
               SizedBox(height: 30),
               Row(
@@ -255,7 +276,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     ),
                   ),
                   TextButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Go.to(context, AddExperience());
+                    },
                     child: Container(
                       padding:
                           EdgeInsets.symmetric(horizontal: 15, vertical: 10),
@@ -282,90 +305,65 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   color: Colors.grey.shade300,
                   borderRadius: BorderRadius.circular(25),
                 ),
-                child: ListView(
-                  children: [
-                    Text(
-                      "Experience 1:",
-                      style: TextStyle(
-                        color: primaryColor,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 18,
-                      ),
-                    ),
-                    SizedBox(height: 15),
-                    Text(
-                      "Fullstck Developer (or) job roll",
-                      style: TextStyle(
-                        color: Colors.black54,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 18,
-                      ),
-                    ),
-                    SizedBox(height: 10),
-                    Text(
-                      "Current Working Company (or) Fresher",
-                      style: TextStyle(
-                        color: Colors.black54,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 18,
-                      ),
-                    ),
-                    SizedBox(height: 10),
-                    Text(
-                      "March 2019 - Present 1 year 7 month Education",
-                      style: TextStyle(
-                        color: Colors.black54,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 18,
-                      ),
-                    ),
-                    Divider(
-                      height: 30,
-                      thickness: 0.7,
-                      color: Colors.black87,
-                    ),
-                    Text(
-                      "Experience 2:",
-                      style: TextStyle(
-                        color: primaryColor,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 18,
-                      ),
-                    ),
-                    SizedBox(height: 15),
-                    Text(
-                      "Fullstck Developer (or) job roll",
-                      style: TextStyle(
-                        color: Colors.black54,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 18,
-                      ),
-                    ),
-                    SizedBox(height: 10),
-                    Text(
-                      "Current Working Company (or) Fresher",
-                      style: TextStyle(
-                        color: Colors.black54,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 18,
-                      ),
-                    ),
-                    SizedBox(height: 10),
-                    Text(
-                      "March 2019 - Present 1 year 7 month Education",
-                      style: TextStyle(
-                        color: Colors.black54,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 18,
-                      ),
-                    ),
-                    Divider(
-                      height: 30,
-                      thickness: 0.7,
-                      color: Colors.black87,
-                    ),
-                  ],
-                ),
+                child: experience.length == 0
+                    ? Center(
+                        child: Text(
+                        "No Experience added yet!",
+                        style: TextStyle(color: Colors.grey),
+                      ))
+                    : CupertinoScrollbar(
+                        controller: _experienceController,
+                        child: ListView.builder(
+                            controller: _experienceController,
+                            itemCount: experience.length,
+                            itemBuilder: (context, index) {
+                              return Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    "Experience: ${index + 1}",
+                                    style: TextStyle(
+                                      color: primaryColor,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 18,
+                                    ),
+                                  ),
+                                  SizedBox(height: 15),
+                                  Text(
+                                    experience[index].jobroll,
+                                    style: TextStyle(
+                                      color: Colors.black54,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 18,
+                                    ),
+                                  ),
+                                  SizedBox(height: 10),
+                                  Text(
+                                    experience[index].companyname,
+                                    style: TextStyle(
+                                      color: Colors.black54,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 18,
+                                    ),
+                                  ),
+                                  SizedBox(height: 10),
+                                  Text(
+                                    experience[index].started,
+                                    style: TextStyle(
+                                      color: Colors.black54,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 18,
+                                    ),
+                                  ),
+                                  Divider(
+                                    height: 30,
+                                    thickness: 0.7,
+                                    color: Colors.black87,
+                                  ),
+                                ],
+                              );
+                            })),
               ),
             ],
           ),

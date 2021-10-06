@@ -1,11 +1,12 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cia_client/constant.dart';
 import 'package:cia_client/design_ui/drawer.dart';
+import 'package:cia_client/utils/storage_manager.dart';
+import 'package:cia_client/utils/user_repository.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:page_indicator/page_indicator.dart';
-
-import '../utils/data.dart';
 import '../utils/model.dart';
 
 class ConnectMain extends StatefulWidget {
@@ -19,6 +20,31 @@ class _ConnectMainState extends State<ConnectMain> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   List liked = [];
+  String userId = "";
+  List<Post> postList = [];
+
+  @override
+  void initState() {
+    getPosts();
+    StorageManager.readData("userId").then((value) {
+      setState(() {
+        userId = value;
+      });
+    });
+    super.initState();
+  }
+
+  Future getPosts() async {
+    var res = await UserRepository().getAllPosts();
+    setState(() {
+      postList = res.map<Post>((json) => Post.fromJson(json)).toList();
+      postList.forEach((post) {
+        if (post.liked.contains(userId)) {
+          liked.add(post.postId);
+        }
+      });
+    });
+  }
 
   Widget postWidget(Post post) {
     return Container(
@@ -75,7 +101,7 @@ class _ConnectMainState extends State<ConnectMain> {
               ),
             ),
             trailing: DropdownButton<String>(
-              icon: Icon(Icons.more_vert),
+              icon: Icon(Icons.more_vert, color: Colors.black54),
               underline: SizedBox(),
               items: <String>['Connect', 'Block', 'Report'].map((String value) {
                 return DropdownMenuItem<String>(
@@ -147,29 +173,41 @@ class _ConnectMainState extends State<ConnectMain> {
           Divider(
             height: 30,
             thickness: 1,
-            color: Colors.grey.shade400,
+            color: Colors.black54,
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               IconButton(
-                  onPressed: () {
-                    setState(() {
-                      if (liked.contains(post.postId)) {
-                        liked.remove(post.postId);
-                      } else {
-                        liked.add(post.postId);
-                      }
-                    });
-                  },
-                  icon: Icon(liked.contains(post.postId)
-                      ? Icons.thumb_up_alt
-                      : Icons.thumb_up_alt_outlined)),
+                onPressed: () async {
+                  setState(() {
+                    if (liked.contains(post.postId)) {
+                      liked.remove(post.postId);
+                      UserRepository().disLike(post.postId, userId);
+                    } else {
+                      liked.add(post.postId);
+                      UserRepository().like(post.postId, userId);
+                    }
+                  });
+                },
+                icon: Icon(
+                    liked.contains(post.postId)
+                        ? FontAwesomeIcons.solidHeart
+                        : FontAwesomeIcons.heart,
+                    size: 20,
+                    color: Colors.black54),
+              ),
               SizedBox(width: 10),
-              IconButton(onPressed: () {}, icon: Icon(Icons.comment_outlined)),
+              IconButton(
+                  onPressed: () {},
+                  icon: Icon(FontAwesomeIcons.solidComment,
+                      size: 20, color: Colors.black54)),
               Spacer(),
-              IconButton(onPressed: () {}, icon: Icon(Icons.share)),
+              IconButton(
+                  onPressed: () {},
+                  icon: Icon(FontAwesomeIcons.share,
+                      size: 20, color: Colors.black54)),
             ],
           ),
         ],
@@ -198,7 +236,7 @@ class _ConnectMainState extends State<ConnectMain> {
         body: Container(
           child: ListView(
             padding: EdgeInsets.only(bottom: 15),
-            children: posts.map((post) => postWidget(post)).toList(),
+            children: postList.map((post) => postWidget(post)).toList(),
           ),
         ),
       ),
