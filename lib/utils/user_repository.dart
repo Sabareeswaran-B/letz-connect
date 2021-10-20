@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:api_cache_manager/api_cache_manager.dart';
 import 'package:api_cache_manager/models/cache_db_model.dart';
+import 'package:cia_client/utils/data.dart';
 import 'package:cia_client/utils/storage_manager.dart';
 // import 'package:cia_client/storage_manager.dart';
 // import 'package:http/http.dart' as http;
@@ -122,10 +123,22 @@ class UserRepository {
   Future getAllPosts() async {
     var value = await StorageManager.readData("userId").then((value) async {
       if (value != null) {
-        var res = await APICacheManager().getCacheData("post");
-        Map postCache = jsonDecode(res.syncData);
-        print(postCache);
-        return postCache['post'];
+        bool postExist = await APICacheManager().isAPICacheKeyExist("post");
+        if (!postExist) {
+          var post = jsonEncode({"post": data});
+          APICacheDBModel postCacheDBModel =
+              new APICacheDBModel(key: "post", syncData: post);
+
+          await APICacheManager().addCacheData(postCacheDBModel);
+          getAllPosts();
+        } else {
+          var res = await APICacheManager().getCacheData("post");
+          Map postCache = jsonDecode(res.syncData);
+          print(postCache);
+          return postCache['post'];
+        }
+      } else {
+        return [];
       }
     });
     return value;
