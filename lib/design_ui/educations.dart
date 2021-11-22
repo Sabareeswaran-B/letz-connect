@@ -81,7 +81,11 @@ class _EducationScreenState extends State<EducationScreen> {
           title: Text("Education"),
         ),
         body: education.isEmpty
-            ? Center(child: CircularProgressIndicator(color: primaryColor))
+            ? Center(
+                child: Text(
+                "No Education added yet",
+                style: TextStyle(color: Colors.grey),
+              ))
             : ListView.builder(
                 padding: EdgeInsets.all(10),
                 itemCount: education.length,

@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:cia_client/constant.dart';
-import 'package:cia_client/design_ui/connect_main.dart';
+// import 'package:cia_client/design_ui/connect_main.dart';
 import 'package:cia_client/design_ui/signin.dart';
 import 'package:cia_client/utils/navigation.dart';
 import 'package:cia_client/utils/user_repository.dart';
@@ -39,12 +39,12 @@ class _SignupScreenState extends State<SignupScreen> {
     }
     if (!_emailError && !_passwordError && !_cPasswordError) {
       var user = await UserRepository()
-          .signup(_userName.text, _email.text, _password.text);
-      if (user['success'] == true) {
+          .signup(_userName.text, _email.text, _password.text, _cPassword.text);
+      if (user['msg'] == "succesfully registered") {
         Timer(Duration(milliseconds: 500), () {
           Go.toWithoutTrail(
             context,
-            ConnectMain(),
+            SigninScreen(),
           );
         });
       }

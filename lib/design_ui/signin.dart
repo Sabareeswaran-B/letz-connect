@@ -1,4 +1,4 @@
-import 'dart:async';
+// import 'dart:async';
 
 import 'package:cia_client/constant.dart';
 import 'package:cia_client/design_ui/connect_main.dart';
@@ -34,24 +34,23 @@ class _SigninScreenState extends State<SigninScreen> {
     if (!_emailError && !_passwordError) {
       var user = await UserRepository().signin(_email.text, _password.text);
       if (user != null) {
-        if (user['message'] == "Invalid email") {
+        if (user['msg'] == "Invalid email") {
           setState(() {
             _emailError = true;
           });
         }
-        if (user['message'] == "Invalid password") {
+        if (user['msg'] == "Invalid password") {
           setState(() {
             _passwordError = true;
           });
         }
-        if (user['success'] == true) {
-          print(user);
-          Timer(Duration(milliseconds: 500), () {
+        if (user['msg'] == "successfully loggedin") {
+          // Timer(Duration(milliseconds: 500), () {
             Go.toWithoutTrail(
               context,
               ConnectMain(),
             );
-          });
+          // });
         }
       }
     }

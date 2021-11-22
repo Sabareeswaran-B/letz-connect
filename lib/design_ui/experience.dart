@@ -80,7 +80,11 @@ class _ExperienceScreenState extends State<ExperienceScreen> {
           title: Text("Experience"),
         ),
         body: experience.isEmpty
-            ? Center(child: CircularProgressIndicator(color: primaryColor))
+            ? Center(
+                child: Text(
+                "No Experience added yet",
+                style: TextStyle(color: Colors.grey),
+              ))
             : ListView.builder(
                 padding: EdgeInsets.all(10),
                 itemCount: experience.length,
