@@ -18,3 +18,5 @@ final Widget connectTitle = Container(
     ),
   ),
 );
+
+const String baseURL = "https://letz-connect-backend.herokuapp.com";
