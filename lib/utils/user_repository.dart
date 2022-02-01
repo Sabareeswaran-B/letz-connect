@@ -32,12 +32,12 @@ class UserRepository {
     // String user = jsonEncode(obj);
     var res = await http.post(Uri.parse(baseURL+"/login"),
         body: obj);
-    // print(res.body);
+    print(res.body);
     var user = jsonDecode(res.body);
     StorageManager.saveData("username", user['username']);
     StorageManager.saveData("token", user['token']);
     StorageManager.saveData("email", email);
-    StorageManager.saveData("userId", user['userId']);
+    StorageManager.saveData("userId", user['_id']);
     return (user);
   }
 
@@ -59,7 +59,7 @@ class UserRepository {
     // } else {
     //   return {"message": "Email already exist", "success": false, "data": null};
     // }
-    var res = await http.post(Uri.parse(baseURL+"signup"),
+    var res = await http.post(Uri.parse(baseURL+"/signup"),
         body: obj);
     // print(res.body);
     // bool isExist = await APICacheManager().isAPICacheKeyExist(email);
@@ -160,7 +160,7 @@ class UserRepository {
     var token = await StorageManager.readData('token');
     print(token);
     var res = await http.get(
-      Uri.parse(baseURL+"get/experience"),
+      Uri.parse(baseURL+"/get/experience"),
       headers: {'x-access-token': token},
     );
     var result = jsonDecode(res.body);

@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 
 import 'constant.dart';
 
-
 void main() {
   runApp(MyApp());
 }
@@ -14,8 +13,8 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       navigatorKey: navState,
       debugShowCheckedModeBanner: false,
-      title: 'Smart NFT',
-      home: SplashScreen(),
+      title: 'Letz Connect',
+      home: SplashScreen(),      
     );
   }
 }

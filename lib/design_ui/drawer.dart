@@ -8,6 +8,7 @@ import 'package:cia_client/design_ui/educations.dart';
 import 'package:cia_client/design_ui/experience.dart';
 import 'package:cia_client/design_ui/get_started.dart';
 import 'package:cia_client/design_ui/profile.dart';
+import 'package:cia_client/design_ui/skills.dart';
 import 'package:cia_client/utils/navigation.dart';
 import 'package:cia_client/utils/storage_manager.dart';
 import 'package:flutter/cupertino.dart';
@@ -135,6 +136,14 @@ class _DrawerScreenState extends State<DrawerScreen> {
                     },
                     leading: Icon(FontAwesomeIcons.bookOpen),
                     title: Text("Education & Carear"),
+                    trailing: Icon(Icons.chevron_right),
+                  ),
+                  ListTile(
+                    onTap: () {
+                      Go.to(context, SkillsPage());
+                    },
+                    leading: Icon(FontAwesomeIcons.bookOpen),
+                    title: Text("Add Skills"),
                     trailing: Icon(Icons.chevron_right),
                   ),
                   ListTile(
